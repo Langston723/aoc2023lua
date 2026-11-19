@@ -42,12 +42,12 @@ local function find_num_word(s)
 
          if not first.position or current_position < first.position then
             first.position = current_position
-            first.number = tostring(number_words[word])
+            first.number = number_words[word]
          end
 
          if not last.position or current_position > last.position then
             last.position = current_position
-            last.number = tostring(number_words[word])
+            last.number = number_words[word]
          end
 
          start = current_position + 1
