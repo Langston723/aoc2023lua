@@ -1,9 +1,7 @@
 local input = require("lib.input")
-local lines = input.lines("02day/real.txt")
+local lines = input.lines("02day/example.txt")
 
-local red_max = 12
-local green_max = 13
-local blue_max = 14
+local max = { red = 12, green = 13, blue = 14 }
 
 local sum = 0
 for _, line in ipairs(lines) do
@@ -11,20 +9,43 @@ for _, line in ipairs(lines) do
 
    local isPossible = true
    for num, color in string.gmatch(line, "(%d+) (%w+)") do
-      if color == "red" and tonumber(num) > red_max then
+      if color == "red" and tonumber(num) > max.red then
          isPossible = false
-      elseif color == "green" and tonumber(num) > green_max then
+      elseif color == "green" and tonumber(num) > max.green then
          isPossible = false
-      elseif color == "blue" and tonumber(num) > blue_max then
+      elseif color == "blue" and tonumber(num) > max.blue then
          isPossible = false
       end
    end
 
    if isPossible then
       sum = sum + tonumber(game_id)
-   else
-      print("Game id: " .. game_id .. " failed!")
    end
 end
 
 print("Part 1 = " .. sum)
+
+-- Part 2
+-- Similar approach as part 1 but track the largets color count combination?
+
+local sum_powers = 0
+for _, line in ipairs(lines) do
+   local game_id = string.match(line, "Game (%d+):")
+   local largest = { red = 0, green = 0, blue = 0 }
+
+   local isPossible = true
+   for n, color in string.gmatch(line, "(%d+) (%w+)") do
+      local num = tonumber(n)
+      if color == "red" and num > largest.red then
+         largest.red = num
+      elseif color == "green" and num > largest.green then
+         largest.green = num
+      elseif color == "blue" and num > largest.blue then
+         largest.blue = num
+      end
+   end
+
+   sum_powers = sum_powers + largest.blue * largest.green * largest.red
+end
+
+print("Part 2 = " .. sum_powers)
