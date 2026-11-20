@@ -1,7 +1,10 @@
 local input = require("lib.input")
-local lines = input.lines("02day/example.txt")
+local lines = input.lines("02day/real.txt")
 
 local max = { red = 12, green = 13, blue = 14 }
+
+-- Part 1
+-- Pattern matching ftw
 
 local sum = 0
 for _, line in ipairs(lines) do
@@ -26,14 +29,12 @@ end
 print("Part 1 = " .. sum)
 
 -- Part 2
--- Similar approach as part 1 but track the largets color count combination?
+-- Same appraoch as Part 1 but tracking largest values
 
 local sum_powers = 0
 for _, line in ipairs(lines) do
-   local game_id = string.match(line, "Game (%d+):")
    local largest = { red = 0, green = 0, blue = 0 }
 
-   local isPossible = true
    for n, color in string.gmatch(line, "(%d+) (%w+)") do
       local num = tonumber(n)
       if color == "red" and num > largest.red then
