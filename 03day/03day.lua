@@ -3,7 +3,7 @@ local lines = input.lines("03day/real.txt")
 
 local sum = 0 -- part 1 answer is the sum of the part numbers
 
-local function find_part_num(index, position)
+local function find_part_numbers(index, position)
    local numbers = {}
    local line = lines[index]
    local start = 1
@@ -25,36 +25,24 @@ local function find_part_num(index, position)
 end
 
 for line_number, line in ipairs(lines) do
-   local pos = 1
+   local start = 1
    while true do
-      local i, _, sym = string.find(line, "([^%w%s%.])", pos)
-      if not sym then
+      local pos, _, symbol = string.find(line, "([^%w%s%.])", start)
+      if not symbol then
          break
       end
 
-      -- check current line
-      local nums = find_part_num(line_number, i)
-      for _, num in ipairs(nums) do
-         sum = sum + num
-      end
-
-      -- check previous line
-      if line_number - 1 > 0 then
-         nums = find_part_num(line_number - 1, i)
-         for _, num in ipairs(nums) do
-            sum = sum + num
+      -- check previous, current, and next lines
+      for i = -1, 1 do
+         if line_number + i > 0 and line_number + i <= #lines then
+            local nums = find_part_numbers(line_number + i, pos)
+            for _, num in ipairs(nums) do
+               sum = sum + num
+            end
          end
       end
 
-      -- check next row
-      if line_number + 1 <= #lines then
-         nums = find_part_num(line_number + 1, i)
-         for _, num in ipairs(nums) do
-            sum = sum + num
-         end
-      end
-
-      pos = i + 1
+      start = pos + 1
    end
 end
 
@@ -66,29 +54,22 @@ print("Part 1 = " .. sum)
 sum = 0
 
 for line_number, line in ipairs(lines) do
-   local pos = 1
+   local start = 1
    while true do
-      local i, _, sym = string.find(line, "(*)", pos)
+      local position, _, sym = string.find(line, "(*)", start)
       if not sym then
          break
       end
 
-      -- check current line
-      local part_numbers = find_part_num(line_number, i)
+      local part_numbers = {}
 
-      -- check previous line
-      if line_number - 1 > 0 then
-         local previous_numbers = find_part_num(line_number - 1, i)
-         for _, number in ipairs(previous_numbers) do
-            table.insert(part_numbers, number)
-         end
-      end
-
-      -- check next row
-      if line_number + 1 <= #lines then
-         local next_numbers = find_part_num(line_number + 1, i)
-         for _, number in ipairs(next_numbers) do
-            table.insert(part_numbers, number)
+      -- check previous, current, and last
+      for i = -1, 1 do
+         if line_number + i > 0 and line_number + i <= #lines then
+            local temp = find_part_numbers(line_number + i, position)
+            for _, number in ipairs(temp) do
+               table.insert(part_numbers, number)
+            end
          end
       end
 
@@ -96,7 +77,7 @@ for line_number, line in ipairs(lines) do
          sum = sum + part_numbers[1] * part_numbers[2]
       end
 
-      pos = i + 1
+      start = position + 1
    end
 end
 
