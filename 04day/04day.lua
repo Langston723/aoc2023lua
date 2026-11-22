@@ -12,17 +12,11 @@ for _, line in ipairs(lines) do
    local start = colon
    while true do
       local _, e, num = string.find(line, " (%d+)", start)
-      if not num then
+      if not num or start >= pipe - 1 then
          break
       end
-
       winners[num] = true
-
       start = e + 1
-
-      if start >= pipe - 1 then
-         break
-      end
    end
 
    -- get numbers
