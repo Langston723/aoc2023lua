@@ -2,7 +2,7 @@ local input = require("lib.input")
 
 local almanac = input.lines("05day/real.txt")
 
--- Seeds
+-- Seeds - Part 1
 local seeds = {}
 for seed in string.gmatch(almanac[1], "(%d+)") do
    table.insert(seeds, tonumber(seed))
