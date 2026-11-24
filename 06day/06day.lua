@@ -1,5 +1,5 @@
 local input = require("lib.input")
-local lines = input.lines("06day/real.txt")
+local lines = input.lines("06day/example.txt")
 
 local times = {}
 for t in string.gmatch(lines[1], "%d+") do
@@ -20,8 +20,10 @@ end
 
 -- Part 1
 local product = 1
+
 for _, race in ipairs(races) do
    local count = 0
+
    for speed = 1, race.time do
       local time_remaining = race.time - speed
       local current_dist = time_remaining * speed
@@ -29,6 +31,7 @@ for _, race in ipairs(races) do
          count = count + 1
       end
    end
+
    product = product * count
 end
 
